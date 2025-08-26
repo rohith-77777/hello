@@ -50,7 +50,7 @@
 <body>
 
 <div class="slideshow-container">
-    <img src="https://facultytick.com/wp-content/uploads/2022/02/Keshav-Memorial-Engineering-College.jpg" alt="Image 1">
+  <img src="https://facultytick.com/wp-content/uploads/2022/02/Keshav-Memorial-Engineering-College.jpg" alt="Image 1">
   <img src="https://source.unsplash.com/random/1920x1080?nature,2" alt="Image 2">
   <img src="https://source.unsplash.com/random/1920x1080?nature,3" alt="Image 3">
 </div>
@@ -66,27 +66,19 @@
 </div>
 
 <script>
-document.getElementById('signupForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+document.getElementById('signupForm').addEventListener('submit', (e) => {
+  e.preventDefault(); // stop form default action
 
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-
-  const response = await fetch('/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, password })
-  });
-
-  const text = await response.text();
-  alert(text);
+  alert("Form submitted successfully!");
   document.getElementById('signupForm').reset();
 
-  // redirect after submit
-  window.location.href = "test.html";
+  // redirect after 1 second
+  setTimeout(() => {
+    window.location.href = "test.html";
+  }, 1000);
 });
 </script>
 
 </body>
 </html>
+
