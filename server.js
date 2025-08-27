@@ -5,8 +5,9 @@ const app = express();
 app.use(express.json());
 app.use(express.static(__dirname)); // serves index.html and test.html
 
-let submissions = [];
+let submissions = []; // in-memory storage
 
+// Handle form submission
 app.post("/submit", (req, res) => {
   const { name, email, password } = req.body;
 
@@ -15,11 +16,12 @@ app.post("/submit", (req, res) => {
   }
 
   submissions.push({ name, email, password });
-  console.log("✅ Submission:", { name, email, password });
+  console.log("✅ New Submission:", { name, email, password });
 
   res.status(200).send("Form submitted successfully");
 });
 
+// Show all submissions
 app.get("/submissions", (req, res) => {
   let html = `
     <h1>All Submissions</h1>
