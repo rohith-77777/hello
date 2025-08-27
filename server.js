@@ -2,10 +2,15 @@ const express = require("express");
 const path = require("path");
 
 const app = express();
-app.use(express.json());
-app.use(express.static(__dirname)); // serves index.html and test.html
 
-let submissions = []; // in-memory storage
+// Middleware to parse JSON body
+app.use(express.json());
+
+// Serve static files (index.html, test.html, etc.)
+app.use(express.static(__dirname));
+
+// In-memory storage for submissions
+let submissions = [];
 
 // Handle form submission
 app.post("/submit", (req, res) => {
@@ -16,26 +21,33 @@ app.post("/submit", (req, res) => {
   }
 
   submissions.push({ name, email, password });
+
   console.log("✅ New Submission:", { name, email, password });
 
+  // Respond with success
   res.status(200).send("Form submitted successfully");
 });
 
-// Show all submissions
+// Page to view all submissions
 app.get("/submissions", (req, res) => {
   let html = `
     <h1>All Submissions</h1>
     <table border="1" cellpadding="10" cellspacing="0">
       <tr><th>Name</th><th>Email</th><th>Password</th></tr>
   `;
-  submissions.forEach(s => {
-    html += `<tr><td>${s.name}</td><td>${s.email}</td><td>${s.password}</td></tr>`;
+
+  submissions.forEach(sub => {
+    html += `<tr><td>${sub.name}</td><td>${sub.email}</td><td>${sub.password}</td></tr>`;
   });
+
   html += "</table>";
   res.send(html);
 });
 
-app.listen(3000, () => {
-  console.log("✅ Server running at http://localhost:3000");
+// Start server
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running at http://localhost:${PORT}`);
+  console.log(`📌 View submissions at http://localhost:${PORT}/submissions`);
 });
 
