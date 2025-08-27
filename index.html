@@ -66,25 +66,33 @@
 </div>
 
 <script>
-document.getElementById('signupForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("signupForm");
 
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); // stop normal form submission
 
-  const response = await fetch('/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, password })
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+      const response = await fetch("/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      if (response.ok) {
+        window.location.href = "test.html"; // go to thank-you page
+      } else {
+        const error = await response.text();
+        alert("Server error: " + error);
+      }
+    } catch (err) {
+      alert("Fetch failed: " + err.message);
+    }
   });
-
-  if (response.ok) {
-    // redirect to thank-you page
-    window.location.href = "test.html";
-  } else {
-    alert("Error submitting form");
-  }
 });
 </script>
 
