@@ -82,7 +82,8 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
   if (response.ok) {
     // redirect to thank-you page
     window.location.href = "test.html";
-  } 
+  } else {
+    alert("Error submitting form");
   }
 });
 </script>
