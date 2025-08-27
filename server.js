@@ -17,15 +17,11 @@ app.get("/", (req, res) => {
 app.post("/submit", (req, res) => {
   const { name, email, password } = req.body;
 
-  // Save submission
+  // Save submission in memory
   submissions.push({ name, email, password });
 
-  console.log("✅ New Submission:");
-  console.log("Name:", name);
-  console.log("Email:", email);
-  console.log("Password:", password);
-
-  res.send(`Received → Name: ${name}, Email: ${email}, Password: ${password}`);
+  console.log("✅ New Submission:", { name, email, password });
+  res.status(200).send("Form submitted successfully");
 });
 
 // Page to view all submissions
@@ -49,4 +45,3 @@ app.listen(3000, () => {
   console.log("✅ Server running at http://localhost:3000");
   console.log("📌 View submissions at http://localhost:3000/submissions");
 });
-
