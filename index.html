@@ -66,16 +66,25 @@
 </div>
 
 <script>
-document.getElementById('signupForm').addEventListener('submit', (e) => {
-  e.preventDefault(); // stop form default action
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-  alert("Form submitted successfully!");
-  document.getElementById('signupForm').reset();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-  // redirect after 1 second
-  setTimeout(() => {
+  const response = await fetch('/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, password })
+  });
+
+  if (response.ok) {
+    // redirect to thank-you page
     window.location.href = "test.html";
-  }, 1000);
+  } else {
+    alert("Error submitting form");
+  }
 });
 </script>
 
