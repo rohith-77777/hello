@@ -2,100 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fullscreen Slideshow with Form</title>
+  <title>Registration Page</title>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body, html { height:100%; font-family: Arial, sans-serif; }
-
-    .slideshow-container {
-      position: fixed; top:0; left:0; width:100%; height:100%; overflow:hidden; z-index:-1;
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
     }
 
-    .slideshow-container img {
-      position:absolute; width:100%; height:100%; object-fit:cover;
-      opacity:0; animation:fade 15s infinite;
+    /* Fullscreen slideshow */
+    .slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
     }
 
-    @keyframes fade {
-      0% {opacity:0;} 8% {opacity:1;} 33% {opacity:1;} 41% {opacity:0;} 100% {opacity:0;}
+    .slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
     }
 
-    .slideshow-container img:nth-child(1){animation-delay:0s;}
-    .slideshow-container img:nth-child(2){animation-delay:5s;}
-    .slideshow-container img:nth-child(3){animation-delay:10s;}
+    .slideshow img.active {
+      opacity: 1;
+    }
 
+    /* Form container */
     .form-container {
-      position: relative; top:50%; left:50%;
+      position: relative;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.6); padding:40px 30px;
-      border-radius:12px; width:90%; max-width:400px;
-      color:#fff; text-align:center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
-    .form-container h2 { margin-bottom:20px; }
-
-    .form-container input {
-      width:100%; padding:12px; margin:10px 0; border:none; border-radius:6px;
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
     }
-
-    .form-container button {
-      width:100%; padding:12px; background:#4CAF50;
-      color:white; border:none; border-radius:6px; cursor:pointer; font-size:16px; margin-top:10px;
-    }
-
-    .form-container button:hover { background:#45a049; }
   </style>
 </head>
 <body>
 
-<div class="slideshow-container">
-  <img src="https://facultytick.com/wp-content/uploads/2022/02/Keshav-Memorial-Engineering-College.jpg" alt="Image 1">
-  <img src="https://source.unsplash.com/random/1920x1080?nature,2" alt="Image 2">
-  <img src="https://source.unsplash.com/random/1920x1080?nature,3" alt="Image 3">
-</div>
+  <!-- Fullscreen slideshow -->
+  <div class="slideshow">
+    <img src="image1.jpg" class="active" alt="Slide 1">
+    <img src="image2.jpg" alt="Slide 2">
+  </div>
 
-<div class="form-container">
-  <h2>Sign Up</h2>
-  <form id="signupForm">
-    <input type="text" id="name" name="name" placeholder="Full Name" required>
-    <input type="email" id="email" name="email" placeholder="Email" required>
-    <input type="password" id="password" name="password" placeholder="Password" required>
-    <button type="submit">Register</button>
-  </form>
-</div>
+  <!-- Form container with embedded Google Form -->
+  <div class="form-container">
+    <h2>Registration Form</h2>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScy0jJtXX-cKBqPsdWs2u5rOB71UGwLiz5LVrEjGy0Ozwiu0Q/viewform?embedded=true" width="640" height="843" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+  </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("signupForm");
+  <script>
+    // Slideshow script
+    let slides = document.querySelectorAll(".slideshow img");
+    let currentSlide = 0;
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault(); // stop normal form submission
-
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    try {
-      const response = await fetch("/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password })
-      });
-
-      if (response.ok) {
-        window.location.href = "test.html"; // go to thank-you page
-      } else {
-        const error = await response.text();
-        alert("Server error: " + error);
-      }
-    } catch (err) {
-      alert("Fetch failed: " + err.message);
-    }
-  });
-});
-</script>
+    setInterval(() => {
+      slides[currentSlide].classList.remove("active");
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add("active");
+    }, 4000);
+  </script>
 
 </body>
 </html>
-
